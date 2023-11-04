@@ -25,14 +25,14 @@ public class UserController{
      * @param user
      */
     @PostMapping("/signup")
-    public Result signup(@RequestBody User user) {
+    public String signup(@RequestBody User user) {
         User result = userService.loadByUserName(user.getUsername());
         if(null != result){
             throw new RuntimeException("用户已经存在");
         }
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userService.insert(user);
-        return Result.ok("注册成功");
+        return "注册成功";
     }
 
     /**
@@ -40,12 +40,12 @@ public class UserController{
      * @param username
      */
     @GetMapping("/loadByUserName")
-    public Result loadByUserName(@RequestParam String username) {
+    public User loadByUserName(@RequestParam String username) {
         User result = userService.loadByUserName(username);
         if(null == result){
             throw new RuntimeException("用户不存在");
         }
-        return Result.ok(result);
+        return result;
     }
 
 }
