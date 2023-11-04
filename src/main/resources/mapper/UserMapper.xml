@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="life.bienao.springbootinit.mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="life.bienao.springbootinit.entity.User" >
+        <result column="username" property="username" />
+        <result column="email" property="email" />
+        <result column="password" property="password" />
+        <result column="login_time" property="loginTime" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        username,
+                email,
+                password,
+                login_time,
+                create_time,
+                update_time
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="life.bienao.springbootinit.entity.User">
+        INSERT INTO user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="null != username and '' != username">
+                username,
+            </if>
+            <if test="null != email and '' != email">
+                email,
+            </if>
+            <if test="null != password and '' != password">
+                password,
+            </if>
+            <if test="null != loginTime and '' != loginTime">
+                login_time,
+            </if>
+            <if test="null != createTime and '' != createTime">
+                create_time,
+            </if>
+            <if test="null != updateTime and '' != updateTime">
+                update_time
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="null != username and '' != username">
+                #{username},
+            </if>
+            <if test="null != email and '' != email">
+                #{email},
+            </if>
+            <if test="null != password and '' != password">
+                #{password},
+            </if>
+            <if test="null != loginTime and '' != loginTime">
+                #{loginTime},
+            </if>
+            <if test="null != createTime and '' != createTime">
+                #{createTime},
+            </if>
+            <if test="null != updateTime and '' != updateTime">
+                #{updateTime}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        DELETE FROM user
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="life.bienao.springbootinit.entity.User">
+        UPDATE user
+        <set>
+            <if test="null != username and '' != username">username = #{username},</if>
+            <if test="null != email and '' != email">email = #{email},</if>
+            <if test="null != password and '' != password">password = #{password},</if>
+            <if test="null != loginTime and '' != loginTime">login_time = #{loginTime},</if>
+            <if test="null != createTime and '' != createTime">create_time = #{createTime},</if>
+            <if test="null != updateTime and '' != updateTime">update_time = #{updateTime}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM user
+        WHERE id = #{id}
+    </select>
+
+    <select id="loadByUserName" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM user
+        WHERE username = #{username}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM user
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM user
+    </select>
+
+</mapper>
