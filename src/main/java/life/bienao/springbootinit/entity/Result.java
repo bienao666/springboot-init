@@ -1,4 +1,4 @@
-package life.bienao.springbootinit.param;
+package life.bienao.springbootinit.entity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +15,7 @@ public class Result extends HashMap<String, Object> {
 	}
 	
 	public static Result error() {
-		return error(1000, "未知异常，请联系管理员");
+		return error(1001, "未知异常，请联系管理员");
 	}
 	
 	public static Result error(String msg) {

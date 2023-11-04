@@ -1,13 +1,11 @@
-package boss.portal.filter;
+package life.bienao.springbootinit.filter;
 
-import boss.portal.constant.AuthWhiteList;
-import boss.portal.constant.ConstantKey;
-import boss.portal.exception.ServiceException;
-import boss.portal.service.impl.GrantedAuthorityImpl;
 import cn.hutool.core.util.ObjectUtil;
 import io.jsonwebtoken.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import life.bienao.springbootinit.constant.AuthWhiteList;
+import life.bienao.springbootinit.constant.ConstantKey;
+import life.bienao.springbootinit.service.impl.GrantedAuthorityImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -26,11 +24,9 @@ import java.util.*;
  * 该类继承自BasicAuthenticationFilter，在doFilterInternal方法中，
  * 从http头的Authorization 项读取token数据，然后用Jwts包提供的方法校验token的合法性。
  * 如果校验通过，就认为这是一个取得授权的合法请求
- * @author zhaoxinguo on 2017/9/13.
  */
+@Slf4j
 public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
-
-    private static final Logger logger = LoggerFactory.getLogger(JWTAuthenticationFilter.class);
 	
 	public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
@@ -62,10 +58,9 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
 
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            long start = System.currentTimeMillis();
             String token = request.getHeader(ConstantKey.HEADER_KEY);
             if (ObjectUtil.isEmpty(token)) {
-                throw new ServiceException("Token不能为空!");
+                throw new RuntimeException("Token不能为空!");
             }
             // parse the token.
             String user = null;
@@ -102,8 +97,6 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
                 // 主动刷新token，并返回给前端
                 response.addHeader("refreshToken", refreshToken);
             }
-            long end = System.currentTimeMillis();
-            logger.info("执行时间: {}", (end - start) + " 毫秒");
             user = claims.getSubject();
             if (user != null) {
                 String[] authoritys = user.split("-")[1].split(",");

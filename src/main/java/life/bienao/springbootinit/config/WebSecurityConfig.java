@@ -1,13 +1,13 @@
-package boss.portal.config;
+package life.bienao.springbootinit.config;
 
-import boss.portal.constant.AuthWhiteList;
-import boss.portal.filter.JWTAuthenticationFilter;
-import boss.portal.filter.JWTLoginFilter;
-import boss.portal.handler.CustomAccessDeniedHandler;
-import boss.portal.handler.CustomAuthenticationFailureHandler;
-import boss.portal.handler.CustomAuthenticationEntryPoint;
-import boss.portal.handler.CustomAuthenticationSuccessHandler;
-import boss.portal.service.impl.CustomAuthenticationProvider;
+import life.bienao.springbootinit.constant.AuthWhiteList;
+import life.bienao.springbootinit.filter.JWTAuthenticationFilter;
+import life.bienao.springbootinit.filter.JWTLoginFilter;
+import life.bienao.springbootinit.handler.CustomAccessDeniedHandler;
+import life.bienao.springbootinit.handler.CustomAuthenticationEntryPoint;
+import life.bienao.springbootinit.handler.CustomAuthenticationFailureHandler;
+import life.bienao.springbootinit.handler.CustomAuthenticationSuccessHandler;
+import life.bienao.springbootinit.service.impl.CustomAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,8 +28,6 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 /**
  * SpringSecurity的配置
  * 通过SpringSecurity的配置，将JWTLoginFilter，JWTAuthenticationFilter组合在一起
- *
- * @author zhaoxinguo on 2017/9/13.
  */
 @Configuration
 @EnableWebSecurity

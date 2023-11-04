@@ -1,4 +1,4 @@
-package boss.portal.controller;
+package life.bienao.springbootinit.controller;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -6,13 +6,12 @@ import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
  * @ClassName JwtExceptionController
  * @Description Jwt异常处理类
- * @Author zhaoxinguo
- * @Date 2021/11/26 15:58
  * @Version 1.0
  */
 @RestController

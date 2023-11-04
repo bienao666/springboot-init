@@ -1,7 +1,7 @@
-package boss.portal.constant;
+package life.bienao.springbootinit.constant;
 
 /**
- * @author zhaoxg on 2023年03月14日 10:46
+ * 描述：白名单
  */
 public class AuthWhiteList {
 
@@ -11,16 +11,7 @@ public class AuthWhiteList {
     public static final String[] AUTH_WHITELIST = {
             // -- register url
             "/users/signup",
-            "/users/addTask",
-            "/users/userListV2",
-            // -- swagger ui
-            "/v2/api-docs",
-            "/swagger-resources",
-            "/swagger-resources/**",
-            "/configuration/ui",
-            "/configuration/security",
-            "/swagger-ui.html",
-            "/webjars/**"
+            "/users/login"
             // other public endpoints of your API may be appended to this array
     };
 }

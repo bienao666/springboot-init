@@ -1,12 +1,12 @@
-package boss.portal.filter;
+package life.bienao.springbootinit.filter;
 
-import boss.portal.constant.ConstantKey;
-import boss.portal.entity.User;
-import boss.portal.param.Result;
 import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import life.bienao.springbootinit.constant.ConstantKey;
+import life.bienao.springbootinit.entity.User;
+import life.bienao.springbootinit.entity.Result;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,7 +27,6 @@ import java.util.*;
  * 该类继承自UsernamePasswordAuthenticationFilter，重写了其中的2个方法
  * attemptAuthentication ：接收并解析用户凭证。
  * successfulAuthentication ：用户成功登录后，这个方法会被调用，我们在这个方法里生成token。
- * @author zhaoxinguo on 2017/9/12.
  */
 public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
 

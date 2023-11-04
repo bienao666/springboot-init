@@ -1,11 +1,7 @@
-package boss.portal.constant;
+package life.bienao.springbootinit.constant;
 
 /**
- * 描述：
- * <p>
- *
- * @author: zhaoxinguo
- * @date: 2018/3/12 16:07
+ * 描述：常量
  */
 public class ConstantKey {
 

@@ -1,11 +1,8 @@
-package boss.portal.handler;
+package life.bienao.springbootinit.handler;
 
-import boss.portal.constant.LoginResponseType;
-import boss.portal.param.Result;
 import com.alibaba.fastjson.JSON;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import life.bienao.springbootinit.entity.Result;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
@@ -19,35 +16,17 @@ import java.io.IOException;
 /**
  * 认证失败处理器
  * AuthenticationFailureHandler 用来解决身份验证失败的异常(适用表单登录方式)
- *
- * @author zhaoxg on 2023年04月18日 10:15
  */
 @Component("customAuthenticationFailureHandler")
-//public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
+@Slf4j
 public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
-
-    private static Logger logger = LoggerFactory.getLogger(CustomAuthenticationFailureHandler.class);
-
-    @Value("${loginType}")
-    private String loginType;
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        // 认证失败状态码 401
-        /*Result result = Result.error(HttpStatus.UNAUTHORIZED.value(), exception.getMessage());
+        // 认证失败响应JSON字符串，
+        Result result = Result.error(HttpStatus.UNAUTHORIZED.value(), exception.getMessage());
         String message = JSON.toJSONString(result);
         response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().write(message);*/
-        if (LoginResponseType.JSON.equals(loginType)) {
-            // 认证失败响应JSON字符串，
-            Result result = Result.error(HttpStatus.UNAUTHORIZED.value(), exception.getMessage());
-            String message = JSON.toJSONString(result);
-            response.setContentType("application/json;charset=UTF-8");
-            response.getWriter().write(message);
-        } else {
-            // 重写向回认证页面，注意加上 ?error
-            super.setDefaultFailureUrl("/login/page"+ "?error");
-            super.onAuthenticationFailure(request, response, exception);
-        }
+        response.getWriter().write(message);
     }
 }

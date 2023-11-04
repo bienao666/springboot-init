@@ -1,4 +1,4 @@
-package boss.portal.service.impl;
+package life.bienao.springbootinit.service.impl;
 
 import org.springframework.security.core.GrantedAuthority;
 

@@ -1,8 +1,7 @@
-package boss.portal.handler;
+package life.bienao.springbootinit.handler;
 
-import boss.portal.param.Result;
 import cn.hutool.json.JSONUtil;
-import com.alibaba.fastjson.JSONObject;
+import life.bienao.springbootinit.entity.Result;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
@@ -13,7 +12,6 @@ import java.io.IOException;
 
 /**
  * AccessDeineHandler 用来解决认证过的用户访问无权限资源时的异常
- * @author zhaoxg on 2023年04月18日 10:43
  */
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 

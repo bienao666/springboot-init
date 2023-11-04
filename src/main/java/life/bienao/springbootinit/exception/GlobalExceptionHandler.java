@@ -1,10 +1,10 @@
-package boss.portal.exception;
+package life.bienao.springbootinit.exception;
 
-import boss.portal.param.Result;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
+import life.bienao.springbootinit.entity.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DuplicateKeyException;
@@ -20,8 +20,6 @@ import java.net.ConnectException;
 /**
  * @ClassName GlobalExceptionHandler
  * @Description 全局处理自定义的业务异常
- * @Author zhaoxinguo
- * @Date 2021/11/26 15:59
  * @Version 1.0
  */
 @ControllerAdvice
@@ -41,30 +39,27 @@ public class GlobalExceptionHandler {
         return Result.error("数据库中已存在该记录");
     }
 
-    @ExceptionHandler(UsernameIsExitedException.class)
-    public Result usernameIsExitedException(UsernameIsExitedException e){
-        logger.error(e.getMessage(), e);
-        return Result.error("用户已经存在");
-    }
-
     @ExceptionHandler(Exception.class)
     public Result handleException(Exception e){
         logger.error(e.getMessage(), e);
         return Result.error();
     }
 
-    @ExceptionHandler(ServiceException.class)
-    public Result serviceException(ServiceException e){
+    @ResponseBody
+    @ExceptionHandler(RuntimeException.class)
+    public Result handleRuntimeException(Exception e){
         logger.error(e.getMessage(), e);
-        return Result.error();
+        return Result.error(e.getMessage());
     }
 
+    @ResponseBody
     @ExceptionHandler(ConnectException.class)
     public Result connectException(ConnectException e){
         logger.error(e.getMessage(), e);
         return Result.error("系统调用异常");
     }
 
+    @ResponseBody
     @ExceptionHandler(ResourceAccessException.class)
     public Result connectException(ResourceAccessException e){
         logger.error(e.getMessage(), e);

@@ -1,6 +1,6 @@
-package boss.portal.config;
+package life.bienao.springbootinit.config;
 
-import boss.portal.util.ApplicationUtil;
+import life.bienao.springbootinit.util.ApplicationUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -8,8 +8,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  * @FileName: ThreadConfig
- * @Author: zhaoxinguo
- * @Date: 2019/3/20 18:24
  * @Description: 线程池配置
  */
 @Configuration
