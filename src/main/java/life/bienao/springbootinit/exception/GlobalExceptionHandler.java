@@ -70,41 +70,41 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = {ExpiredJwtException.class})
     public Result expiredJwtException(ExpiredJwtException e) {
         logger.error(e.getMessage(), e);
-        return Result.error("Token过期");
+        return Result.error(401,"Token过期");
     }
 
     @ExceptionHandler(value = UnsupportedJwtException.class)
     @ResponseBody
     public Result unsupportedJwtException(UnsupportedJwtException e) {
         logger.error(e.getMessage(), e);
-        return Result.error("Token签名失败");
+        return Result.error(401,"Token签名失败");
     }
 
     @ExceptionHandler(value = SignatureException.class)
     @ResponseBody
     public Result signatureException(SignatureException e) {
         logger.error(e.getMessage(), e);
-        return Result.error("Token格式错误");
+        return Result.error(401,"Token格式错误");
     }
 
     @ExceptionHandler(value = IllegalArgumentException.class)
     @ResponseBody
     public Result illegalArgumentException(IllegalArgumentException e) {
         logger.error(e.getMessage(), e);
-        return Result.error("Token非法参数异常");
+        return Result.error(401,"Token非法参数异常");
     }
 
     @ExceptionHandler(value = AccessDeniedException.class)
     @ResponseBody
     public Result accessDeniedException(AccessDeniedException e) {
         logger.error(e.getMessage(), e);
-        return Result.error("Token非法参数异常");
+        return Result.error(401,"Token非法参数异常");
     }
 
     @ExceptionHandler(value = MalformedJwtException.class)
     @ResponseBody
     public Result malformedJwtException(MalformedJwtException e) {
         logger.error(e.getMessage(), e);
-        return Result.error("Token没有被正确构造");
+        return Result.error(401,"Token没有被正确构造");
     }
 }

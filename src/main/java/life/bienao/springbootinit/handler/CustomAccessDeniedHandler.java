@@ -18,7 +18,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         response.setHeader("Content-Type", "text/html;charset=UTF-8");
-        Result result = Result.error(403, accessDeniedException.getMessage());
+        Result result = Result.error(401, accessDeniedException.getMessage());
         String message = JSONUtil.toJsonStr(result);
         response.getWriter().write(message);
     }
