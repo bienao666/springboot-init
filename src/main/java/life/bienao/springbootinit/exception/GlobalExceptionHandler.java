@@ -7,13 +7,13 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import life.bienao.springbootinit.entity.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import org.yaml.snakeyaml.constructor.DuplicateKeyException;
 
 import java.net.ConnectException;
 
