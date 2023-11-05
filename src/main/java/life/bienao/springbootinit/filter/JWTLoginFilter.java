@@ -88,7 +88,7 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
             // 设置签发时间
             calendar.setTime(new Date());
             // 设置过期时间
-            calendar.add(Calendar.MINUTE, 5);// 5分钟
+            calendar.add(Calendar.HOUR, 24);// 24小时
             Date time = calendar.getTime();
             token = Jwts.builder()
                     .setSubject(auth.getName() + "-" + roleList)
