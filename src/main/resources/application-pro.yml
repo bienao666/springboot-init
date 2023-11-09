@@ -1,7 +1,7 @@
 server:
   port: 8899
   servlet:
-    context-path: / #请求路径，可以自定义
+    context-path: /api #请求路径，可以自定义
   tomcat:
     max-swallow-size: -1
   shutdown: graceful
