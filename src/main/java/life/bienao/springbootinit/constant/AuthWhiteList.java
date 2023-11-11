@@ -10,8 +10,7 @@ public class AuthWhiteList {
      */
     public static final String[] AUTH_WHITELIST = {
             // -- register url
-            "/users/signup",
-            "/users/login"
+            "/auth/login"
             // other public endpoints of your API may be appended to this array
     };
 }

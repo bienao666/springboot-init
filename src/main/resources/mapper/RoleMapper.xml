@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="life.bienao.springbootinit.mapper.RoleMapper">
+
+    <resultMap id="BaseResultMap" type="life.bienao.springbootinit.entity.Role" >
+        <result column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="role_key" property="roleKey" />
+        <result column="status" property="status" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+        <result column="update_by" property="updateBy" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+                name,
+                role_key,
+                status,
+                del_flag,
+                create_by,
+                create_time,
+                update_by,
+                update_time,
+                remark
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="life.bienao.springbootinit.entity.Role">
+        INSERT INTO sys_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="null != name and '' != name">
+                name,
+            </if>
+            <if test="null != roleKey and '' != roleKey">
+                role_key,
+            </if>
+            <if test="null != status and '' != status">
+                status,
+            </if>
+            <if test="null != delFlag ">
+                del_flag,
+            </if>
+            <if test="null != createBy ">
+                create_by,
+            </if>
+            <if test="null != createTime ">
+                create_time,
+            </if>
+            <if test="null != updateBy ">
+                update_by,
+            </if>
+            <if test="null != updateTime ">
+                update_time,
+            </if>
+            <if test="null != remark and '' != remark">
+                remark
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="null != name and '' != name">
+                #{name},
+            </if>
+            <if test="null != roleKey and '' != roleKey">
+                #{roleKey},
+            </if>
+            <if test="null != status and '' != status">
+                #{status},
+            </if>
+            <if test="null != delFlag ">
+                #{delFlag},
+            </if>
+            <if test="null != createBy ">
+                #{createBy},
+            </if>
+            <if test="null != createTime ">
+                #{createTime},
+            </if>
+            <if test="null != updateBy ">
+                #{updateBy},
+            </if>
+            <if test="null != updateTime ">
+                #{updateTime},
+            </if>
+            <if test="null != remark and '' != remark">
+                #{remark}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        DELETE FROM sys_role
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="life.bienao.springbootinit.entity.Role">
+        UPDATE sys_role
+        <set>
+            <if test="null != name and '' != name">name = #{name},</if>
+            <if test="null != roleKey and '' != roleKey">role_key = #{roleKey},</if>
+            <if test="null != status and '' != status">status = #{status},</if>
+            <if test="null != delFlag ">del_flag = #{delFlag},</if>
+            <if test="null != createBy ">create_by = #{createBy},</if>
+            <if test="null != createTime ">create_time = #{createTime},</if>
+            <if test="null != updateBy ">update_by = #{updateBy},</if>
+            <if test="null != updateTime ">update_time = #{updateTime},</if>
+            <if test="null != remark and '' != remark">remark = #{remark}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM sys_role
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM sys_role
+        order by id
+    </select>
+
+</mapper>

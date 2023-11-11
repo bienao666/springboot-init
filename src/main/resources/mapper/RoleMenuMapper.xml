@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="life.bienao.springbootinit.mapper.RoleMenuMapper">
+
+    <resultMap id="BaseResultMap" type="life.bienao.springbootinit.entity.RoleMenu" >
+        <result column="role_id" property="roleId" />
+        <result column="menu_id" property="menuId" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        role_id,
+                menu_id
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="life.bienao.springbootinit.entity.RoleMenu">
+        INSERT INTO sys_role_menu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="null != roleId ">
+                role_id,
+            </if>
+            <if test="null != menuId ">
+                menu_id
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="null != roleId ">
+                #{roleId},
+            </if>
+            <if test="null != menuId ">
+                #{menuId}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        DELETE FROM sys_role_menu
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="life.bienao.springbootinit.entity.RoleMenu">
+        UPDATE sys_role_menu
+        <set>
+            <if test="null != roleId ">role_id = #{roleId},</if>
+            <if test="null != menuId ">menu_id = #{menuId}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM sys_role_menu
+        WHERE id = #{id}
+    </select>
+
+    <select id="loadByRoleId" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM sys_role_menu
+        WHERE role_id = #{roleId}
+        order by menu_id
+    </select>
+
+</mapper>

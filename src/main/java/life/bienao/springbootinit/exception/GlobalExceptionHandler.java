@@ -98,7 +98,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public Result accessDeniedException(AccessDeniedException e) {
         logger.error(e.getMessage(), e);
-        return Result.error(401,"Token非法参数异常");
+        return Result.error(403,e.getMessage());
     }
 
     @ExceptionHandler(value = MalformedJwtException.class)

@@ -19,7 +19,7 @@ public class Result extends HashMap<String, Object> {
 	}
 
 	public static Result error(String msg) {
-		return error(1000, msg);
+		return error(500, msg);
 	}
 
 	public static Result error(int code, String msg) {

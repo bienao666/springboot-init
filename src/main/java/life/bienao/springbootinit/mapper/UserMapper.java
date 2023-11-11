@@ -3,46 +3,43 @@ package life.bienao.springbootinit.mapper;
 import life.bienao.springbootinit.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * @description user
- * @author BEJSON
- * @date 2023-11-04
  */
 @Mapper
 public interface UserMapper {
 
     /**
      * 新增
-     * @author BEJSON
-     * @date 2023/11/04
      **/
     int insert(User user);
 
     /**
      * 刪除
-     * @author BEJSON
-     * @date 2023/11/04
      **/
     int delete(int id);
 
     /**
      * 更新
-     * @author BEJSON
-     * @date 2023/11/04
      **/
     int update(User user);
 
     /**
-     * 查询 根据主键 id 查询
-     * @author BEJSON
-     * @date 2023/11/04
+     * 查询
      **/
     User load(int id);
 
     /**
+     * 查询
+     **/
+    List<User> loadAll();
+
+    /**
      * 查询 根据用户名 查询
-     * @param username
+     * @param userName
      * @return
      */
-    User loadByUserName(String username);
+    User loadByUserName(String userName);
 }

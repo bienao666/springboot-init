@@ -1,7 +1,6 @@
 package life.bienao.springbootinit.controller;
 
 import life.bienao.springbootinit.entity.User;
-import life.bienao.springbootinit.entity.Result;
 import life.bienao.springbootinit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
  *
  */
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController{
 
     @Autowired
@@ -26,7 +25,7 @@ public class UserController{
      */
     @PostMapping("/signup")
     public String signup(@RequestBody User user) {
-        User result = userService.loadByUserName(user.getUsername());
+        User result = userService.loadByUserName(user.getUserName());
         if(null != result){
             throw new RuntimeException("用户已经存在");
         }
@@ -39,6 +38,7 @@ public class UserController{
      * 根据用户查询用户
      * @param username
      */
+//    @PreAuthorize("hasAnyAuthority('test')")
     @GetMapping("/loadByUserName")
     public User loadByUserName(@RequestParam String username) {
         User result = userService.loadByUserName(username);

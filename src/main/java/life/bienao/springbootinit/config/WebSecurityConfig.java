@@ -1,29 +1,20 @@
 package life.bienao.springbootinit.config;
 
 import life.bienao.springbootinit.constant.AuthWhiteList;
-import life.bienao.springbootinit.filter.JWTAuthenticationFilter;
-import life.bienao.springbootinit.filter.JWTLoginFilter;
-import life.bienao.springbootinit.handler.CustomAccessDeniedHandler;
-import life.bienao.springbootinit.handler.CustomAuthenticationEntryPoint;
-import life.bienao.springbootinit.handler.CustomAuthenticationFailureHandler;
-import life.bienao.springbootinit.handler.CustomAuthenticationSuccessHandler;
-import life.bienao.springbootinit.service.impl.CustomAuthenticationProvider;
+import life.bienao.springbootinit.filter.JWTFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * SpringSecurity的配置
@@ -31,66 +22,56 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
  */
 @Configuration
 @EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
-@EnableGlobalMethodSecurity(securedEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    private JWTFilter jwtFilter;
 
     @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private AccessDeniedHandler accessDeniedHandler;
 
-    // 设置 HTTP 验证规则
+    @Autowired
+    private AuthenticationEntryPoint authenticationEntryPoint;
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        LogoutConfigurer<HttpSecurity> httpSecurityLogoutConfigurer = http.cors().and().csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+        http
+                //关闭csrf
+                .csrf().disable()
+                //不通过Session获取SecurityContext
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .authorizeRequests()
-                .antMatchers(AuthWhiteList.AUTH_WHITELIST).permitAll()
-                .anyRequest().authenticated()  // 所有请求需要身份认证
-                .and()
-                .addFilter(new JWTLoginFilter(authenticationManager()))
-                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
-                .exceptionHandling()
-                .authenticationEntryPoint(authenticationEntryPoint())// 自定义身份验证入口点
-                .accessDeniedHandler(accessDeniedHandler()) // 自定义访问失败处理器
-                .and()
-                .formLogin()
-                .successHandler(authenticationSuccessHandler())// 认证成功处理器
-                .failureHandler(authenticationFailureHandler())// 认证失败处理器
-                .and()
-                .logout() // 默认注销行为为logout，可以通过下面的方式来修改
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login")// 设置注销成功后跳转页面，默认是跳转到登录页面;
-                .permitAll();
-    }
+                // 对于登录接口 允许匿名访问
+                .antMatchers(AuthWhiteList.AUTH_WHITELIST).anonymous()
+                // 除上面外的所有请求全部需要鉴权认证
+                .anyRequest().authenticated();
 
-    // 该方法是登录的时候会进入
-    @Override
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        // 使用自定义身份验证组件
-        auth.authenticationProvider(new CustomAuthenticationProvider(userDetailsService, bCryptPasswordEncoder));
+        //把token校验过滤器添加到过滤器链中
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+        //配置自定义的异常处理器
+        http.exceptionHandling()
+                //认证失败处理器
+                .authenticationEntryPoint(authenticationEntryPoint)
+                //授权失败处理器
+                .accessDeniedHandler(accessDeniedHandler);
+
+        //允许跨域
+        http.cors();
+
     }
 
     @Bean
-    public AuthenticationEntryPoint authenticationEntryPoint() {
-        return new CustomAuthenticationEntryPoint();
-    }
-
-    @Bean
-    public AuthenticationSuccessHandler authenticationSuccessHandler() {
-        return new CustomAuthenticationSuccessHandler();
-    }
-
-    @Bean
-    public AuthenticationFailureHandler authenticationFailureHandler() {
-        return new CustomAuthenticationFailureHandler();
-    }
-
-    @Bean
-    public AccessDeniedHandler accessDeniedHandler() {
-        return new CustomAccessDeniedHandler();
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
 }
