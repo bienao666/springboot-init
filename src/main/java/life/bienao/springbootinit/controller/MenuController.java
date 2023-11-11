@@ -3,11 +3,8 @@ package life.bienao.springbootinit.controller;
 import life.bienao.springbootinit.entity.CommonPage;
 import life.bienao.springbootinit.entity.Menu;
 import life.bienao.springbootinit.service.MenuService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @description 菜单表
@@ -16,45 +13,45 @@ import javax.annotation.Resource;
 @RequestMapping(value = "/menu")
 public class MenuController {
 
-    @Resource
+    @Autowired
     private MenuService menuService;
 
     /**
      * 新增
      **/
-    @RequestMapping("/insert")
-    public int insert(Menu menu){
+    @PostMapping("/insert")
+    public int insert(@RequestBody Menu menu){
         return menuService.insert(menu);
     }
 
     /**
      * 刪除
      **/
-    @RequestMapping("/delete")
-    public int delete(int id){
+    @GetMapping("/delete")
+    public int delete(@RequestParam int id){
         return menuService.delete(id);
     }
 
     /**
      * 更新
      **/
-    @RequestMapping("/update")
-    public int update(Menu menu){
+    @PostMapping("/update")
+    public int update(@RequestBody Menu menu){
         return menuService.update(menu);
     }
 
     /**
      * 查询 根据主键 id 查询
      **/
-    @RequestMapping("/load")
-    public Object load(int id){
+    @GetMapping("/load")
+    public Object load(@RequestParam int id){
         return menuService.load(id);
     }
 
     /**
      * 查询 分页查询
      **/
-    @RequestMapping("/pageList")
+    @GetMapping("/pageList")
     public CommonPage<Menu> pageList(@RequestParam(required = false, defaultValue = "0") int offset,
                                                @RequestParam(required = false, defaultValue = "10") int pagesize) {
         return menuService.pageList(offset, pagesize);

@@ -7,7 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 /**
- *
+ * @description 用户
  */
 @RestController
 @RequestMapping("/user")
