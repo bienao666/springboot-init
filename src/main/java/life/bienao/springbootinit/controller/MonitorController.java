@@ -1,6 +1,6 @@
 package life.bienao.springbootinit.controller;
 
-import com.alibaba.fastjson.JSONObject;
+import life.bienao.springbootinit.entity.Server;
 import life.bienao.springbootinit.service.MonitorService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class MonitorController {
      * @return
      */
     @GetMapping({"/getAllInfo"})
-    public JSONObject getAllInfo() {
+    public Server getAllInfo() {
         return monitorService.getAllInfo();
     }
 
