@@ -52,8 +52,8 @@ public class MenuController {
      * 查询 分页查询
      **/
     @GetMapping("/pageList")
-    public CommonPage<Menu> pageList(@RequestParam(required = false, defaultValue = "0") int offset,
-                                               @RequestParam(required = false, defaultValue = "10") int pagesize) {
+    public CommonPage<Menu> pageList(@RequestParam(required = false, defaultValue = "1") int offset,
+                                     @RequestParam(required = false, defaultValue = "10") int pagesize) {
         return menuService.pageList(offset, pagesize);
     }
 

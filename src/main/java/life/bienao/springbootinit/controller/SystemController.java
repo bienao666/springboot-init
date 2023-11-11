@@ -52,7 +52,7 @@ public class SystemController {
      * 查询 分页查询
      **/
     @RequestMapping("/pageList")
-    public CommonPage<System> pageList(@RequestParam(required = false, defaultValue = "0") int offset,
+    public CommonPage<System> pageList(@RequestParam(required = false, defaultValue = "1") int offset,
                                        @RequestParam(required = false, defaultValue = "10") int pagesize) {
         return systemService.pageList(offset, pagesize);
     }

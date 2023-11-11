@@ -15,7 +15,7 @@ public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 主键
+     * id
      */
     private Integer id;
 
@@ -37,7 +37,7 @@ public class User implements Serializable {
     /**
      * 账号状态（0正常 1停用）
      */
-    private String status;
+    private Integer status;
 
     /**
      * 邮箱
@@ -52,7 +52,7 @@ public class User implements Serializable {
     /**
      * 用户性别（0男，1女，2未知）
      */
-    private String sex;
+    private Integer sex;
 
     /**
      * 头像
@@ -62,12 +62,12 @@ public class User implements Serializable {
     /**
      * 用户类型（0管理员，1普通用户）
      */
-    private String userType;
+    private Integer userType;
 
     /**
      * 创建人的用户id
      */
-    private Long createBy;
+    private Integer createBy;
 
     /**
      * 创建时间
@@ -78,7 +78,7 @@ public class User implements Serializable {
     /**
      * 更新人
      */
-    private Long updateBy;
+    private Integer updateBy;
 
     /**
      * 更新时间
