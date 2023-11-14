@@ -2,14 +2,19 @@ package life.bienao.springbootinit.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * 处理跨域问题
+ * web配置
  */
 @Configuration
-public class CordConfig implements WebMvcConfigurer {
+public class WebConfig implements WebMvcConfigurer {
 
+    /**
+     * 跨域问题
+     * @param registry
+     */
     @Override
     public void addCorsMappings(CorsRegistry registry){
         //设置允许跨域的路径
@@ -24,6 +29,15 @@ public class CordConfig implements WebMvcConfigurer {
                 .allowedHeaders("*")
                 //跨域允许时间
                 .maxAge(3600);
+    }
+
+    /**
+     * 所有/init/路径都代理到index.html下
+     * @param registry
+     */
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/init/**").setViewName("forward:/index.html");
     }
 
 
