@@ -1,11 +1,19 @@
 package life.bienao.springbootinit.controller;
 
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSONObject;
+import io.jsonwebtoken.Claims;
+import life.bienao.springbootinit.constant.ConstantKey;
+import life.bienao.springbootinit.constant.Redis;
+import life.bienao.springbootinit.entity.LoginUser;
 import life.bienao.springbootinit.entity.User;
 import life.bienao.springbootinit.service.UserService;
+import life.bienao.springbootinit.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @description 用户
@@ -36,17 +44,24 @@ public class UserController{
     }
 
     /**
-     * 根据用户查询用户
-     * @param username
+     * 查询登录用户
      */
 //    @PreAuthorize("hasAnyAuthority('test')")
-    @GetMapping("/loadByUserName")
-    public User loadByUserName(@RequestParam String username) {
-        User result = userService.loadByUserName(username);
-        if(null == result){
-            throw new RuntimeException("用户不存在");
+    @GetMapping("/loadLoginUser")
+    public User loadLoginUser(HttpServletRequest httpServletRequest) {
+        String token = httpServletRequest.getHeader(ConstantKey.HEADER_KEY);
+        //解析token
+        String userId;
+        try {
+            Claims claims = JwtUtil.parseJWT(token.replace(ConstantKey.BEARER, ""));
+            userId = claims.getSubject();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("token非法");
         }
-        return result;
+        //根据解析到的id查询redis
+        LoginUser loginUser = Redis.loginUser.get("login:" + userId);
+        return loginUser.getUser();
     }
 
     /**
@@ -65,7 +80,48 @@ public class UserController{
         if(user.getPassword().length() < 6){
             throw new RuntimeException("密码长度不能小于6位");
         }
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        //此接口不修改密码
+        user.setPassword(null);
+        userService.update(user);
+        return "注册成功";
+    }
+
+    /**
+     * 修改密码
+     * @param param
+     */
+    @PostMapping("/updateUserPwd")
+    public String updateUserPwd(HttpServletRequest httpServletRequest, @RequestBody JSONObject param) {
+        String token = httpServletRequest.getHeader(ConstantKey.HEADER_KEY);
+        //解析token
+        String userId;
+        try {
+            Claims claims = JwtUtil.parseJWT(token.replace(ConstantKey.BEARER, ""));
+            userId = claims.getSubject();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("token非法");
+        }
+        //根据解析到的id查询redis
+        LoginUser loginUser = Redis.loginUser.get("login:" + userId);
+        User user = loginUser.getUser();
+        String oldPassword = param.getString("oldPassword");
+        String newPassword = param.getString("newPassword");
+        if(StrUtil.isEmpty(oldPassword)){
+            throw new RuntimeException("旧密码不能为空");
+        }
+        if(StrUtil.isEmpty(newPassword)){
+            throw new RuntimeException("新密码不能为空");
+        }
+        if(newPassword.length() < 6){
+            throw new RuntimeException("密码长度不能小于6位");
+        }
+
+        if (bCryptPasswordEncoder.encode(oldPassword).equals(user.getPassword())){
+            throw new RuntimeException("旧密码错误");
+        }
+
+        user.setPassword(bCryptPasswordEncoder.encode(newPassword));
         userService.update(user);
         return "注册成功";
     }
