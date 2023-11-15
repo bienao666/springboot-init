@@ -1,5 +1,6 @@
 package life.bienao.springbootinit.controller;
 
+import cn.hutool.core.util.StrUtil;
 import life.bienao.springbootinit.entity.User;
 import life.bienao.springbootinit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,5 +48,28 @@ public class UserController{
         }
         return result;
     }
+
+    /**
+     * 修改信息
+     * @param user
+     */
+    @PostMapping("/update")
+    public String update(@RequestBody User user) {
+        User result = userService.load(user.getId());
+        if(null == result){
+            throw new RuntimeException("用户不存在");
+        }
+        if(StrUtil.isEmpty(user.getPassword())){
+            throw new RuntimeException("密码不能为空");
+        }
+        if(user.getPassword().length() < 6){
+            throw new RuntimeException("密码长度不能小于6位");
+        }
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        userService.update(user);
+        return "注册成功";
+    }
+
+
 
 }
