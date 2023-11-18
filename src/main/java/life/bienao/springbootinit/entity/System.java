@@ -3,6 +3,7 @@ package life.bienao.springbootinit.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -22,6 +23,7 @@ public class System implements Serializable {
     /**
      * 参数编码
      */
+    @NotBlank(message = "参数编码不能为空")
     private String code;
 
     /**

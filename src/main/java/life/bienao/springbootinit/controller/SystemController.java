@@ -4,6 +4,7 @@ import life.bienao.springbootinit.entity.CommonPage;
 import life.bienao.springbootinit.entity.System;
 import life.bienao.springbootinit.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -20,7 +21,7 @@ public class SystemController {
      * 新增
      **/
     @PostMapping("/insert")
-    public int insert(@RequestBody System system){
+    public int insert(@Validated @RequestBody System system){
         return systemService.insert(system);
     }
 
@@ -36,7 +37,7 @@ public class SystemController {
      * 更新
      **/
     @PostMapping("/update")
-    public int update(@RequestBody System system){
+    public int update(@Validated @RequestBody System system){
         return systemService.update(system);
     }
 

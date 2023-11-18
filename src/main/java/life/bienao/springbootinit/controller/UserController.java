@@ -11,6 +11,7 @@ import life.bienao.springbootinit.service.UserService;
 import life.bienao.springbootinit.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +34,7 @@ public class UserController{
      * @param user
      */
     @PostMapping("/signup")
-    public String signup(@RequestBody User user) {
+    public String signup(@Validated @RequestBody User user) {
         User result = userService.loadByUserName(user.getUserName());
         if(null != result){
             throw new RuntimeException("用户已经存在");
