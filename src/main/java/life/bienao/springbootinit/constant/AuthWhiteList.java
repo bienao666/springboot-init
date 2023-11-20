@@ -11,7 +11,7 @@ public class AuthWhiteList {
     public static final String[] AUTH_WHITELIST = {
             // -- register url
             "/auth/login",
-            "/init/**",
+            "/view/**",
             "/assets/**",
             "/img/**",
             "/tinymce/**",

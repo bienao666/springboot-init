@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * @description 用户
+ * 系统用户
  */
 @RestController
 @RequestMapping("/user")

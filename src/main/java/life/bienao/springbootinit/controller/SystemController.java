@@ -8,7 +8,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * @description 系统参数
+ * 系统参数
  */
 @RestController
 @RequestMapping(value = "/system")

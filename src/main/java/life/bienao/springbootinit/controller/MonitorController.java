@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 监控 Controller
+ * 服务监控
  *
  * @author bolo.bienao.life
  */

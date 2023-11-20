@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @description 服务
+ * 系统服务
  */
 @RestController
 @RequestMapping(value = "/server")
@@ -16,6 +16,10 @@ public class RestartController {
     @Autowired
     private RestartService restartService;
 
+    /**
+     * 重启
+     * @return
+     */
     @GetMapping("/restart")
     public String restart() {
         restartService.restart();
