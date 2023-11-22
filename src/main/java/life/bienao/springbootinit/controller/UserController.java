@@ -7,9 +7,12 @@ import life.bienao.springbootinit.constant.ConstantKey;
 import life.bienao.springbootinit.constant.Redis;
 import life.bienao.springbootinit.entity.LoginUser;
 import life.bienao.springbootinit.entity.User;
+import life.bienao.springbootinit.service.AuthService;
 import life.bienao.springbootinit.service.UserService;
 import life.bienao.springbootinit.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +31,9 @@ public class UserController{
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AuthService authService;
 
     /**
      * 注册用户 默认开启白名单
@@ -92,19 +98,10 @@ public class UserController{
      * @param param
      */
     @PostMapping("/updateUserPwd")
-    public String updateUserPwd(HttpServletRequest httpServletRequest, @RequestBody JSONObject param) {
-        String token = httpServletRequest.getHeader(ConstantKey.HEADER_KEY);
-        //解析token
-        String userId;
-        try {
-            Claims claims = JwtUtil.parseJWT(token.replace(ConstantKey.BEARER, ""));
-            userId = claims.getSubject();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("token非法");
-        }
-        //根据解析到的id查询redis
-        LoginUser loginUser = Redis.loginUser.get("login:" + userId);
+    public String updateUserPwd(@RequestBody JSONObject param) {
+        //获取SecurityContextHolder中的用户id
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        LoginUser loginUser = (LoginUser) authentication.getPrincipal();
         User user = loginUser.getUser();
         String oldPassword = param.getString("oldPassword");
         String newPassword = param.getString("newPassword");
@@ -124,7 +121,9 @@ public class UserController{
 
         user.setPassword(bCryptPasswordEncoder.encode(newPassword));
         userService.update(user);
-        return "注册成功";
+        //退出登陆
+        authService.logout();
+        return "修改成功";
     }
 
 

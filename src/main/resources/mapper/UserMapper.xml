@@ -151,7 +151,7 @@
             <if test="null != createBy ">create_by = #{createBy},</if>
             <if test="null != createTime ">create_time = #{createTime},</if>
             <if test="null != updateBy ">update_by = #{updateBy},</if>
-            <if test="null != delFlag ">del_flag = #{delFlag}</if>
+            <if test="null != delFlag ">del_flag = #{delFlag},</if>
             update_time = CURRENT_TIMESTAMP
         </set>
         WHERE id = #{id}
