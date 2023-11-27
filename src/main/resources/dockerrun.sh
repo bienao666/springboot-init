@@ -1,1 +1,1 @@
-docker run --name springboot-init -d --restart always -p 8899:8899 -v /root/springboot-init/log:/home/log/ -v /root/springboot-init/db:/home/db/ springboot-init:latest
+docker run --name springboot-init -d --restart always -e TZ=Asia/Shanghai -p 8899:8899 -v /root/springboot-init/log:/home/log/ -v /root/springboot-init/db:/home/db/ springboot-init:latest
