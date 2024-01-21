@@ -71,7 +71,4 @@ mybatis:
 logging:
   config: classpath:logback-spring.xml
 
-jwt:
-  header: Authorization
-
 
