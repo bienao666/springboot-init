@@ -1,14 +1,17 @@
 package life.bienao.springbootinit.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import life.bienao.springbootinit.entity.GetEmailCodeEntity;
-import life.bienao.springbootinit.entity.RegisterEntity;
-import life.bienao.springbootinit.entity.ResetPasswordEntity;
-import life.bienao.springbootinit.entity.User;
+import io.jsonwebtoken.Claims;
+import life.bienao.springbootinit.constant.ConstantKey;
+import life.bienao.springbootinit.constant.Redis;
+import life.bienao.springbootinit.entity.*;
 import life.bienao.springbootinit.service.AuthService;
+import life.bienao.springbootinit.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 授权
@@ -63,5 +66,27 @@ public class AuthController {
     @PostMapping("/resetPassword")
     public void resetPassword(@RequestBody @Validated ResetPasswordEntity entity){
         authService.resetPassword(entity);
+    }
+
+
+
+    /**
+     * 查询登录用户
+     */
+    @GetMapping("/loadLoginUser")
+    public User loadLoginUser(HttpServletRequest httpServletRequest) {
+        String token = httpServletRequest.getHeader(ConstantKey.HEADER_KEY);
+        //解析token
+        String userId;
+        try {
+            Claims claims = JwtUtil.parseJWT(token.replace(ConstantKey.BEARER, ""));
+            userId = claims.getSubject();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("token非法");
+        }
+        //根据解析到的id查询redis
+        LoginUser loginUser = Redis.loginUser.get("login:" + userId);
+        return loginUser.getUser();
     }
 }

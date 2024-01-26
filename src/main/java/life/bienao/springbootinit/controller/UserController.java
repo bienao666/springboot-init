@@ -51,27 +51,6 @@ public class UserController{
     }
 
     /**
-     * 查询登录用户
-     */
-//    @PreAuthorize("hasAnyAuthority('test')")
-    @GetMapping("/loadLoginUser")
-    public User loadLoginUser(HttpServletRequest httpServletRequest) {
-        String token = httpServletRequest.getHeader(ConstantKey.HEADER_KEY);
-        //解析token
-        String userId;
-        try {
-            Claims claims = JwtUtil.parseJWT(token.replace(ConstantKey.BEARER, ""));
-            userId = claims.getSubject();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("token非法");
-        }
-        //根据解析到的id查询redis
-        LoginUser loginUser = Redis.loginUser.get("login:" + userId);
-        return loginUser.getUser();
-    }
-
-    /**
      * 修改信息
      * @param user
      */
