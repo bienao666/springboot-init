@@ -112,12 +112,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     @ResponseBody
-    public Result handleMethodArgumentNotValidException(MethodArgumentNotValidException e,
-                                                        HttpServletRequest request) {
-        String requestURI = request.getRequestURI();
-        String message = e.getBindingResult().getFieldError().getDefaultMessage();
-        log.error("请求地址{},参数验证失败{}", requestURI, e.getObjectName(),e);
-        return Result.error(message);
+    public Result handleValidationExceptions(MethodArgumentNotValidException ex) {
+        StringBuilder sb = new StringBuilder();
+        ex.getBindingResult().getAllErrors().forEach(error -> {
+            String fieldName = ((org.springframework.validation.FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            sb.append(fieldName).append(":").append(errorMessage).append(";");
+        });
+        return Result.error(sb.toString());
     }
 
     @ExceptionHandler(value = BadSqlGrammarException.class)
